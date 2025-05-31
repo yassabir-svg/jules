@@ -37,7 +37,9 @@
   <link rel='dns-prefetch' href='//www.googletagservices.com'/>
   <link rel='dns-prefetch' href='//pagead2.googlesyndication.com'/>
   
+  <!-- TODO: Replace with your favicon URL -->
   <link href='YOUR_FAVICON.ico' rel='icon' type='image/x-icon'/>
+  <!-- TODO: Replace with your apple touch icon URL -->
   <link href='YOUR_APPLE_TOUCH_ICON.png' rel='apple-touch-icon'/>
   <b:if cond='data:blog.isMobile'>
     <meta content='yes' name='mobile-web-app-capable'/>
@@ -763,7 +765,7 @@
                     </header>
                     
                     <div class='post-content' itemprop='articleBody'>
-                      <b:if cond='data:post.featuredImage and data:blog.pageType == &quot;item&quot;'> <img class='post-thumbnail' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image' style='margin-bottom:1.5em;'/>
+                      <b:if cond='data:post.featuredImage and data:blog.pageType == &quot;item&quot;'> <img class='post-thumbnail post-featured-image-single-item' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image'/>
                       </b:if>
                       <data:post.body/>
                     </div>
@@ -874,6 +876,7 @@
       <div class='footer-content'>
         <div class='footer-section about-us'>
           <h3>About Us</h3>
+          <!-- TODO: Customize About Us section content below -->
           <p>Your blog description or a short bio here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
         <div class='footer-section quick-links'>
@@ -887,6 +890,7 @@
         </div>
         <div class='footer-section follow-us'>
           <h3>Follow Us</h3>
+          <!-- TODO: Update Follow Us links and add more if needed -->
           <ul>
             <li><a href='#' target='_blank' rel='noopener noreferrer'>Facebook</a></li>
             <li><a href='#' target='_blank' rel='noopener noreferrer'>Twitter</a></li>
@@ -901,19 +905,17 @@
     </div>
   </footer>
 
-  <!--
-  <a href='#' id='back-to-top' title='Back to Top' style='display:none;position:fixed;bottom:20px;right:20px;background:#0066cc;color:white;padding:10px 15px;border-radius:5px;z-index:1000;'>&uarr;</a>
+  <a href='#' id='back-to-top' title='Back to Top'>&uarr;</a>
   <script>
   // Simple Back to Top Button Script
-  // window.onscroll = function() {
-  //   var backToTopButton = document.getElementById('back-to-top');
-  //   if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-  //     backToTopButton.style.display = 'block';
-  //   } else {
-  //     backToTopButton.style.display = 'none';
-  //   }
-  // };
+  window.onscroll = function() {
+    var backToTopButton = document.getElementById('back-to-top');
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+      backToTopButton.style.display = 'block';
+    } else {
+      backToTopButton.style.display = 'none';
+    }
+  };
   </script>
-  -->
 </body>
 </html>
