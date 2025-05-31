@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+  <meta charset='utf-8'/>
+  <meta content='width=device-width,initial-scale=1,minimum-scale=1' name='viewport'/>
+  
+  <title><data:blog.pageTitle/></title>
+  
+  <b:if cond='data:blog.metaDescription'>
+    <meta expr:content='data:blog.metaDescription' name='description'/>
+  </b:if>
+  <meta content='follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large' name='robots'/>
+  
+  <meta expr:content='data:blog.title' property='og:site_name'/>
+  <meta expr:content='data:blog.pageTitle' property='og:title'/>
+  <b:if cond='data:blog.metaDescription'>
+    <meta expr:content='data:blog.metaDescription' property='og:description'/>
+  </b:if>
+  <meta expr:content='data:blog.url' property='og:url'/>
+  <meta content='website' property='og:type'/>
+  <meta content='en_US' property='og:locale'/>
+  
+  <meta content='summary_large_image' name='twitter:card'/>
+  <meta expr:content='data:blog.title' name='twitter:site'/>
+  <meta expr:content='data:blog.pageTitle' name='twitter:title'/>
+  <b:if cond='data:blog.metaDescription'>
+    <meta expr:content='data:blog.metaDescription' name='twitter:description'/>
+  </b:if>
+  
+  <link expr:href='data:blog.url' rel='canonical'/>
+  
+  <link expr:href='data:blog.homepageUrl + &quot;feeds/posts/default&quot;' rel='alternate' title='RSS' type='application/rss+xml'/>
+  
+  <link rel='dns-prefetch' href='//fonts.googleapis.com'/>
+  <link rel='dns-prefetch' href='//www.googletagservices.com'/>
+  <link rel='dns-prefetch' href='//pagead2.googlesyndication.com'/>
+  
+  <link href='YOUR_FAVICON.ico' rel='icon' type='image/x-icon'/>
+  <link href='YOUR_APPLE_TOUCH_ICON.png' rel='apple-touch-icon'/>
+  <b:if cond='data:blog.isMobile'>
+    <meta content='yes' name='mobile-web-app-capable'/>
+    <meta content='black-translucent' name='apple-mobile-web-app-status-bar-style'/>
+  </b:if>
+
+  <script type='application/ld+json'>
+  <![CDATA[
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "]]><data:blog.title.jsonEscaped/><![CDATA[",
+    "description": "]]><b:if cond='data:blog.metaDescription'><data:blog.metaDescription.jsonEscaped/></b:if><![CDATA[",
+    "url": "]]><data:blog.homepageUrl.jsonEscaped/><![CDATA[",
+    "publisher": {
+      "@type": "Organization",
+      "name": "]]><data:blog.title.jsonEscaped/><![CDATA[",
+      "url": "]]><data:blog.homepageUrl.jsonEscaped/><![CDATA["
+      // IMPORTANT: Add your logo URL here for better SEO
+      // "logo": {
+      //   "@type": "ImageObject",
+      //   "url": "YOUR_ACTUAL_LOGO_URL_HERE.png",
+      //   "width": 600, // Optional: logo width
+      //   "height": 60 // Optional: logo height
+      // }
+    }
+  }
+  ]]>
+  </script>
+
+  <b:skin><![CDATA[
+  /* CSS Reset & Base Styles */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #fff;
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.5em;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.5rem; }
+  h5 { font-size: 1.25rem; }
+  h6 { font-size: 1.1rem; }
+  
+  p { margin-bottom: 1em; }
+  
+  a {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover { color: #004499; }
+  a:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  /* Layout Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Header */
+  .header { /* This is the sticky part containing logo and nav */
+    background: #fff;
+    border-bottom: 1px solid #e1e1e1;
+    position: sticky;
+    top: 0; /* Sticks to the very top of the viewport */
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0; /* Adjust padding as needed, affects header height */
+    min-height: 60px; /* Example minimum height, adjust as needed */
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .logo a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  /* Navigation */
+  .nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+  }
+  
+  .nav a {
+    color: #666;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .nav a:hover {
+    color: #0066cc;
+    border-bottom-color: #0066cc;
+  }
+  
+  /* AdSense Header Banner (This part scrolls, it's above the sticky header) */
+  .header-ad {
+    background: #f8f9fa;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e1e1e1;
+  }
+  
+  /* Main Layout */
+  .main-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px; /* Main content and sidebar */
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+  
+  .main-content {
+    min-width: 0; /* Prevents flexbox/grid overflow issues */
+  }
+  
+  /* Post Styles */
+  .post {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  
+  .post-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .post-title {
+    margin-bottom: 0.5rem;
+  }
+  
+  .post-title a {
+    color: #333;
+  }
+  
+  .post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .post-content {
+    padding: 1.5rem;
+  }
+  
+  .post-thumbnail {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    max-height: 400px; /* Optional: constrain max height */
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+  
+  .post-snippet {
+    color: #666;
+    line-height: 1.7;
+  }
+  
+  .read-more {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #0066cc;
+    font-weight: 500;
+  }
+  
+  /* Between Posts Ad */
+  .between-posts-ad {
+    background: #f8f9fa;
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+    border-radius: 8px;
+    border: 1px solid #e1e1e1;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: fit-content; /* So it doesn't overflow if content is short */
+    position: sticky;
+    /* IMPORTANT: Adjust this 'top' value based on the actual height of your sticky .header.
+       For example, if your .header (logo/nav part) is 60px tall, and you want 20px spacing, use 80px.
+       The .header-ad is NOT part of the sticky calculation for the sidebar here. */
+    top: 80px; 
+  }
+  
+  .widget {
+    margin-bottom: 2rem;
+  }
+  
+  .widget:last-child {
+    margin-bottom: 0;
+  }
+  
+  .widget-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+    border-bottom: 2px solid #0066cc;
+    padding-bottom: 0.5rem;
+  }
+  
+  .widget ul {
+    list-style: none;
+  }
+  
+  .widget li {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e1e1e1;
+  }
+  
+  .widget li:last-child {
+    border-bottom: none;
+  }
+  
+  /* Sidebar AdSense */
+  .sidebar-ad {
+    background: #fff;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #e1e1e1;
+    margin-bottom: 2rem;
+  }
+  
+  /* Comments */
+  .comments-section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .comments-title {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e1e1e1;
+  }
+  
+  /* Footer */
+  .footer {
+    background: #333;
+    color: #fff;
+    padding: 3rem 0 1rem;
+    margin-top: 4rem;
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* More responsive footer columns */
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .footer-section h3 {
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+  }
+  
+  .footer-section li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-section a {
+    color: #ccc;
+  }
+  
+  .footer-section a:hover {
+    color: #fff;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #555;
+    color: #ccc;
+  }
+  
+  /* Footer AdSense */
+  .footer-ad {
+    background: #f8f9fa;
+    padding: 2rem 0; 
+    text-align: center;
+    margin-bottom: 2rem; 
+  }
+  .footer-ad .container div { /* Style for the inner placeholder */
+     border-radius: 8px;
+  }
+  
+  /* Breadcrumbs */
+  .breadcrumbs {
+    background: #f8f9fa;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e1e1e1; /* Added for separation */
+  }
+  
+  .breadcrumbs a {
+    color: #666;
+  }
+  
+  .breadcrumbs span {
+    margin: 0 0.5rem;
+    color: #999;
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  
+  .pagination a {
+    padding: 0.5rem 1rem;
+    background: #f8f9fa;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    color: #0066cc;
+  }
+  
+  .pagination a:hover {
+    background: #0066cc;
+    color: #fff;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) { /* Tablet and larger mobile */
+    .main-wrapper {
+      grid-template-columns: 1fr; /* Single column layout */
+    }
+    
+    .sidebar {
+      position: static; /* Sidebar no longer sticky */
+      top: auto; 
+    }
+  }
+  
+  @media (max-width: 768px) { /* Smaller tablets and mobile */
+    .container {
+      padding: 0 15px;
+    }
+    
+    .header-content {
+      flex-direction: column; /* Stack logo and nav */
+      gap: 1rem;
+    }
+    
+    .nav ul {
+      gap: 1rem;
+      justify-content: center; 
+      flex-wrap: wrap; /* Allow nav items to wrap if too many */
+    }
+    
+    .main-wrapper {
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .post {
+      margin-bottom: 1.5rem;
+    }
+    
+    .post-header,
+    .post-content {
+      padding: 1rem;
+    }
+    
+    .footer-content {
+      /* Already responsive due to auto-fit, minmax */
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.5rem; }
+  }
+  
+  @media (max-width: 480px) { /* Small mobile */
+    html {
+      font-size: 14px; /* Adjust base font size for smaller screens */
+    }
+    
+    .nav ul {
+      flex-direction: column; /* Stack nav items vertically */
+      align-items: center; 
+      gap: 0.5rem;
+    }
+    
+    .post-meta {
+      flex-direction: column; /* Stack post meta items */
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+    
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.5rem; }
+  }
+  
+  /* Print Styles */
+  @media print {
+    .header, /* Hides the sticky logo/nav header */
+    .header-ad,
+    .sidebar-ad,
+    .between-posts-ad,
+    .footer-ad,
+    .sidebar,
+    .nav, /* Already part of .header, but explicit */
+    .comments-section,
+    .footer,
+    .breadcrumbs,
+    .pagination,
+    .read-more { /* Hide read-more links in print */
+      display: none !important; 
+    }
+    
+    .main-wrapper {
+      grid-template-columns: 1fr;
+      margin: 0;
+      gap: 0;
+    }
+
+    .container {
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    
+    body {
+      font-size: 12pt;
+      line-height: 1.4;
+      background: #fff !important; 
+      color: #000 !important; 
+    }
+    
+    .post {
+      box-shadow: none;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem; 
+      padding: 0; /* Remove padding for print if desired */
+      page-break-inside: avoid; 
+    }
+    .post-header, .post-content {
+        padding: 0.5in; /* Add some padding for printed posts */
+    }
+
+    a, a:visited {
+      text-decoration: none; 
+      color: #000 !important; 
+    }
+    /* Optionally show URLs for links in print */
+    /*
+    a[href]:after { 
+      content: " (" attr(href) ")";
+      font-size: 0.8em;
+      color: #333;
+    }
+    */
+    /* Do not show URLs for internal page links like #main-content */
+    /*
+    a[href^="#"]:after {
+      content: "";
+    }
+    */
+  }
+  
+  /* Accessibility */
+  .sr-only { /* For screen-reader only content */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* Focus styles for better accessibility */
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+  }
+  ]]></b:skin>
+
+  <b:template-skin>
+    <b:variable default='#ffffff' name='body.background' type='color' value='#ffffff'/>
+    <b:variable default='#333333' name='text.color' type='color' value='#333333'/>
+    <b:variable default='#0066cc' name='link.color' type='color' value='#0066cc'/>
+  </b:template-skin>
+</head>
+
+<body>
+  <a class='sr-only' href='#main-content'>Skip to main content</a>
+
+  <div class='header-ad'>
+    <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;min-height:90px;'>
+      <p>Header AdSense Banner (e.g., 728x90 / Responsive)</p>
+      <p>Replace this placeholder with your AdSense code</p>
+    </div>
+  </div>
+
+  <header class='header' role='banner'>
+    <div class='container'>
+      <div class='header-content'>
+        <div class='logo'>
+          <a expr:href='data:blog.homepageUrl'>
+            <data:blog.title/>
+          </a>
+        </div>
+        <nav class='nav' role='navigation' aria-label='Main navigation'>
+          <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/search/label/Technology'>Technology</a></li>
+            <li><a href='/search/label/Lifestyle'>Lifestyle</a></li>
+            <li><a href='/p/about.html'>About</a></li>
+            <li><a href='/p/contact.html'>Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <b:if cond='data:blog.pageType == &quot;item&quot; or data:blog.pageType == &quot;archive&quot; or data:blog.searchLabel'>
+    <div class='breadcrumbs'>
+      <div class='container'>
+        <a expr:href='data:blog.homepageUrl'>Home</a>
+        <b:if cond='data:blog.pageType == &quot;item&quot;'>
+          <b:if cond='data:post.labels'>
+            <b:loop values='data:post.labels' var='label' index='i'>
+              <span>/</span>
+              <a expr:href='data:label.url'><data:label.name/></a>
+            </b:loop>
+          </b:if>
+          <span>/</span>
+          <span><data:blog.pageName/></span>
+        <b:elseif cond='data:blog.searchLabel'/>
+          <span>/</span>
+          <span>Category: <data:blog.searchLabel/></span>
+        <b:elseif cond='data:blog.pageType == &quot;archive&quot;'/>
+          <span>/</span>
+          <span>Archive: <data:blog.pageName/></span>
+        </b:if>
+      </div>
+    </div>
+  </b:if>
+
+  <div class='container'>
+    <div class='main-wrapper'>
+      <main class='main-content' id='main-content' role='main'>
+        
+        <b:section class='main' id='main' maxwidgets='1' name='Blog Posts' showaddelement='no'>
+          <b:widget id='Blog1' locked='true' title='Blog Posts' type='Blog' version='2' visible='true'>
+            <b:widget-settings>
+              <b:widget-setting name='showDateHeader'>false</b:widget-setting>
+              <b:widget-setting name='style.textcolor'>#000000</b:widget-setting>
+              <b:widget-setting name='style.urlcolor'>#0000FF</b:widget-setting>
+              <b:widget-setting name='showShareButtons'>false</b:widget-setting>
+              <b:widget-setting name='showAuthor'>true</b:widget-setting>
+              <b:widget-setting name='showPostLabels'>true</b:widget-setting>
+              <b:widget-setting name='showPostTimestamp'>true</b:widget-setting>
+            </b:widget-settings>
+            <b:includable id='main' var='this'>
+              
+              <b:if cond='data:blog.pageType != &quot;item&quot; and data:blog.pageType != &quot;static_page&quot;'>
+                <b:loop values='data:posts' var='post'>
+                  <article class='post' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+                    <meta expr:content='data:post.id' itemprop='postId'/> <header class='post-header'>
+                      <h2 class='post-title' itemprop='name headline'>
+                        <a expr:href='data:post.url' expr:title='data:post.title' itemprop='url'>
+                          <data:post.title/>
+                        </a>
+                      </h2>
+                      <div class='post-meta'>
+                        <time expr:datetime='data:post.timestampISO8601' itemprop='datePublished'>
+                          <data:post.timestamp/>
+                        </time>
+                        <span>by</span>
+                        <span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+                          <span itemprop='name'><data:post.author/></span>
+                        </span>
+                        <b:if cond='data:post.labels and data:post.labels.size > 0'>
+                          <span>in</span>
+                          <b:loop values='data:post.labels' var='label' index='labelIndex'>
+                            <a expr:href='data:label.url' rel='tag'><data:label.name/></a><b:if cond='data:labelIndex != data:post.labels.size - 1'>, </b:if>
+                          </b:loop>
+                        </b:if>
+                      </div>
+                    </header>
+                    <div class='post-content' itemprop='articleBody'>
+                      <b:if cond='data:post.featuredImage'>
+                        <a expr:href='data:post.url' expr:title='data:post.title'>
+                           <img class='post-thumbnail' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image'/>
+                        </a>
+                      <b:else/>
+                         </b:if>
+                      <div class='post-snippet'>
+                        <b:eval expr='data:post.snippets.long ? data:post.snippets.long : data:post.body snippet { length: 250, links: false, linebreaks: false, ellipsis: true }'/>
+                      </div>
+                      <a class='read-more' expr:href='data:post.url' expr:title='data:post.title'>Read More →</a>
+                    </div>
+                  </article>
+                  
+                  <b:if cond='data:post.includeAd'> <div class='between-posts-ad'>
+                      <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;min-height:90px;'>
+                        <p>Between Posts AdSense (Responsive)</p>
+                        <p>Replace this placeholder with your AdSense code</p>
+                      </div>
+                    </div>
+                  </b:if>
+                </b:loop>
+              </b:if>
+              
+              <b:if cond='data:blog.pageType == &quot;item&quot; or data:blog.pageType == &quot;static_page&quot;'>
+                <b:loop values='data:posts' var='post'> <article class='post' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+                    <meta expr:content='data:post.id' itemprop='postId'/>
+                    <script type='application/ld+json'>
+                    <![CDATA[
+                    {
+                      "@context": "https://schema.org",
+                      "@type": "BlogPosting",
+                      "headline": "]]><data:post.title.jsonEscaped/><![CDATA[",
+                      "image": "]]><b:if cond='data:post.featuredImage'><b:eval expr='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;).jsonEscaped'/><b:else/>YOUR_DEFAULT_POST_IMAGE_URL_HERE</b:if><![CDATA[", // Provide a default image URL if no featured image
+                      "author": {
+                        "@type": "Person",
+                        "name": "]]><data:post.author.jsonEscaped/><![CDATA["
+                      },
+                      "publisher": {
+                        "@type": "Organization",
+                        "name": "]]><data:blog.title.jsonEscaped/><![CDATA[",
+                         "logo": {
+                           "@type": "ImageObject",
+                           // IMPORTANT: Replace with your actual logo URL for better schema
+                           "url": "YOUR_LOGO_URL_HERE.png" 
+                         }
+                      },
+                      "datePublished": "]]><data:post.timestampISO8601.jsonEscaped/><![CDATA[",
+                      "dateModified": "]]><b:eval expr='(data:post.lastUpdatedISO8601 ? data:post.lastUpdatedISO8601 : data:post.timestampISO8601).jsonEscaped'/><![CDATA[",
+                      "mainEntityOfPage": {
+                        "@type": "WebPage",
+                        "@id": "]]><data:post.url.canonical.jsonEscaped/><![CDATA["
+                      },
+                      "description": "]]><b:eval expr='(data:post.metaDescription ? data:post.metaDescription : data:post.snippets.long ? data:post.snippets.long : data:post.body snippet { length: 155, links: false, linebreaks: false, ellipsis: true }) .jsonEscaped'/><![CDATA["
+                    }
+                    ]]>
+                    </script>
+                    
+                    <header class='post-header'>
+                      <h1 class='post-title' itemprop='name headline'>
+                        <data:post.title/>
+                      </h1>
+                      <b:if cond='data:blog.pageType == &quot;item&quot;'> <div class='post-meta'>
+                          <time expr:datetime='data:post.timestampISO8601' itemprop='datePublished'>
+                            <data:post.timestamp/>
+                          </time>
+                          <span>by</span>
+                          <span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+                            <span itemprop='name'><data:post.author/></span>
+                          </span>
+                          <b:if cond='data:post.labels and data:post.labels.size > 0'>
+                            <span>in</span>
+                            <b:loop values='data:post.labels' var='label' index='labelIndex'>
+                              <a expr:href='data:label.url' rel='tag'><data:label.name/></a><b:if cond='data:labelIndex != data:post.labels.size - 1'>, </b:if>
+                            </b:loop>
+                          </b:if>
+                        </div>
+                      </b:if>
+                    </header>
+                    
+                    <div class='post-content' itemprop='articleBody'>
+                      <b:if cond='data:post.featuredImage and data:blog.pageType == &quot;item&quot;'> <img class='post-thumbnail' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image' style='margin-bottom:1.5em;'/>
+                      </b:if>
+                      <data:post.body/>
+                    </div>
+                  </article>
+                </b:loop>
+              </b:if>
+              
+              <b:include cond='data:blog.pageType != &quot;item&quot; and data:blog.pageType != &quot;static_page&quot;' name='feedPagination'/>
+            </b:includable>
+            
+            <b:includable id='feedPagination'>
+              <div class='pagination'>
+                <b:include cond='data:olderPageUrl' name='previousPageLink'/>
+                <b:include cond='data:newerPageUrl' name='nextPageLink'/>
+              </div>
+            </b:includable>
+            
+            <b:includable id='previousPageLink'>
+              <a class='older-posts' expr:href='data:olderPageUrl' expr:title='data:messages.olderPosts'>← <data:messages.olderPosts/></a>
+            </b:includable>
+            
+            <b:includable id='nextPageLink'>
+              <a class='newer-posts' expr:href='data:newerPageUrl' expr:title='data:messages.newerPosts'><data:messages.newerPosts/> →</a>
+            </b:includable>
+          </b:widget>
+        </b:section>
+
+        <b:if cond='data:blog.pageType == &quot;item&quot;'> <b:if cond='data:post.allowComments'>
+            <section class='comments-section'>
+              <h3 class='comments-title'><data:messages.comments/></h3>
+              <b:include data='post' name='comments'/>
+            </section>
+          </b:if>
+        </b:if>
+
+      </main>
+
+      <aside class='sidebar' role='complementary'>
+        
+        <div class='sidebar-ad'>
+          <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;width:100%;max-width:300px;min-height:250px;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto;'>
+            <p>Sidebar AdSense</p>
+            <p>(e.g., 300x250)</p>
+            <p>Replace with your code</p>
+          </div>
+        </div>
+
+        <b:section class='sidebar-widgets' id='sidebar-section' name='Sidebar Widgets' showaddelement='yes'>
+          <b:widget id='PopularPosts1' locked='false' title='Popular Posts' type='PopularPosts' version='2' visible='true'>
+             <b:includable id='main'>
+              <div class='widget'>
+                <h3 class='widget-title'><data:title/></h3>
+                <ul>
+                  <b:loop values='data:posts' var='p'>
+                    <li>
+                      <a expr:href='data:p.url'><data:p.title/></a>
+                    </li>
+                  </b:loop>
+                </ul>
+              </div>
+            </b:includable>
+          </b:widget>
+          <b:widget id='BlogArchive1' locked='false' title='Archive' type='BlogArchive' version='2' visible='true'>
+            <b:includable id='main'>
+              <div class='widget'>
+                <h3 class='widget-title'><data:title/></h3>
+                <div class='archive-list'> <b:include name='quickedit'/>
+                  <b:loop values='data:data' var='item'>
+                    <div expr:class='&quot;archivedate &quot; + data:item.style'>
+                      <a expr:href='data:item.url'><data:item.name/></a> (<data:item.post-count/>)
+                    </div>
+                  </b:loop>
+                </div>
+              </div>
+            </b:includable>
+          </b:widget>
+          <b:widget id='Label1' locked='false' title='Categories' type='Label' version='2' visible='true'>
+            <b:includable id='main'>
+              <div class='widget'>
+                <h3 class='widget-title'><data:title/></h3>
+                <ul>
+                  <b:loop values='data:labels' var='label'>
+                    <li>
+                      <a expr:href='data:label.url' rel='tag'><data:label.name/></a> (<data:label.count/>)
+                    </li>
+                  </b:loop>
+                </ul>
+              </div>
+            </b:includable>
+          </b:widget>
+        </b:section>
+      </aside>
+
+    </div>
+  </div>
+
+  <div class='footer-ad'>
+    <div class='container'>
+      <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;min-height:90px;'>
+        <p>Footer AdSense Banner (Responsive)</p>
+        <p>Replace this placeholder with your AdSense code</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class='footer' role='contentinfo'>
+    <div class='container'>
+      <div class='footer-content'>
+        <div class='footer-section about-us'>
+          <h3>About Us</h3>
+          <p>Your blog description or a short bio here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class='footer-section quick-links'>
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/p/about.html'>About</a></li>
+            <li><a href='/p/contact.html'>Contact</a></li>
+            <li><a href='/p/privacy-policy.html'>Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class='footer-section follow-us'>
+          <h3>Follow Us</h3>
+          <ul>
+            <li><a href='#' target='_blank' rel='noopener noreferrer'>Facebook</a></li>
+            <li><a href='#' target='_blank' rel='noopener noreferrer'>Twitter</a></li>
+            <li><a href='#' target='_blank' rel='noopener noreferrer'>Instagram</a></li>
+            </ul>
+        </div>
+      </div>
+      <div class='footer-bottom'>
+        &copy; <script>document.write(new Date().getFullYear())</script> <data:blog.title.escaped/>. All Rights Reserved.
+        <br/>Powered by <a href='https://www.blogger.com' target='_blank' rel='noopener'>Blogger</a>.
+      </div>
+    </div>
+  </footer>
+
+  <!--
+  <a href='#' id='back-to-top' title='Back to Top' style='display:none;position:fixed;bottom:20px;right:20px;background:#0066cc;color:white;padding:10px 15px;border-radius:5px;z-index:1000;'>&uarr;</a>
+  <script>
+  // Simple Back to Top Button Script
+  // window.onscroll = function() {
+  //   var backToTopButton = document.getElementById('back-to-top');
+  //   if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+  //     backToTopButton.style.display = 'block';
+  //   } else {
+  //     backToTopButton.style.display = 'none';
+  //   }
+  // };
+  </script>
+  -->
+</body>
+</html>
