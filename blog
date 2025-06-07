@@ -6,27 +6,190 @@
   <meta charset='utf-8'/>
   <meta content='width=device-width,initial-scale=1,minimum-scale=1' name='viewport'/>
   
-  <title><data:blog.pageTitle/></title>
-  
-  <b:if cond='data:blog.metaDescription'>
-    <meta expr:content='data:blog.metaDescription' name='description'/>
+  <title>
+    <b:if cond='data:blog.pageType == "item"'>
+      <data:post.title/> - <data:blog.title/>
+    <b:elseif cond='data:blog.pageType == "static_page"'/>
+      <data:page.title/> - <data:blog.title/>
+    <b:elseif cond='data:blog.pageType == "archive"'/>
+      <b:if cond='data:blog.searchLabel'>
+        Category: <data:blog.searchLabel/>
+      <b:else/>
+        Archive: <data:blog.pageName/>
+      </b:if>
+      <b:if cond='data:blog.pageNumber and data:blog.pageNumber gt 1'> - Page <data:blog.pageNumber/></b:if>
+      - <data:blog.title/>
+    <b:elseif cond='data:blog.pageType == "index"'>
+      <b:if cond='data:blog.searchQuery'>
+        Search results for "<data:blog.searchQuery/>"
+        <b:if cond='data:blog.pageNumber and data:blog.pageNumber gt 1'> - Page <data:blog.pageNumber/></b:if>
+        - <data:blog.title/>
+      <b:elseif cond='data:blog.searchLabel'/>
+        Posts in category "<data:blog.searchLabel/>" <!-- This case might be covered by pageType archive with searchLabel -->
+        <b:if cond='data:blog.pageNumber and data:blog.pageNumber gt 1'> - Page <data:blog.pageNumber/></b:if>
+        - <data:blog.title/>
+      <b:else/>
+        <data:blog.title/>
+        <b:if cond='data:blog.metaDescription and data:blog.metaDescription != ""'> - <data:blog.metaDescription.snippet({length: 100, ellipsis: true}) /></b:if>
+      </b:if>
+    <b:else/>
+      <data:blog.pageTitle/> <!-- Fallback -->
+    </b:if>
+  </title>
+
+  <b:if cond='data:blog.pageType == "item"'>
+    <b:if cond='data:post.metaDescription and data:post.metaDescription != ""'>
+      <meta expr:content='data:post.metaDescription' name='description'/>
+    <b:else/>
+      <meta expr:content='data:post.body.snippet({length: 155, ellipsis: true})' name='description'/>
+    </b:if>
+  <b:elseif cond='data:blog.pageType == "static_page"'/>
+    <b:if cond='data:page.metaDescription and data:page.metaDescription != ""'>
+      <meta expr:content='data:page.metaDescription' name='description'/>
+    <b:else/>
+      <meta expr:content='data:page.body.snippet({length: 155, ellipsis: true})' name='description'/>
+    </b:if>
+  <b:elseif cond='data:blog.pageType == "archive"'>
+    <meta expr:content='"Showing posts " + (data:blog.searchLabel ? "in category &quot;" + data:blog.searchLabel + "&quot;" : "for " + data:blog.pageName) + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' name='description'/>
+  <b:elseif cond='data:blog.pageType == "index"'>
+    <b:if cond='data:blog.searchQuery'>
+      <meta expr:content='"Search results for &quot;" + data:blog.searchQuery + "&quot;" + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' name='description'/>
+    <b:elseif cond='data:blog.searchLabel'/>
+      <meta expr:content='"Showing posts in category &quot;" + data:blog.searchLabel + "&quot;" + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' name='description'/>
+    <b:elseif cond='data:blog.metaDescription and data:blog.metaDescription != ""'/>
+      <meta expr:content='data:blog.metaDescription' name='description'/>
+    <b:else/>
+      <meta expr:content='"Welcome to " + data:blog.title + ". Read our latest articles and updates."' name='description'/>
+    </b:if>
+  <b:else/>
+    <b:if cond='data:blog.metaDescription and data:blog.metaDescription != ""'>
+      <meta expr:content='data:blog.metaDescription' name='description'/>
+    </b:if>
   </b:if>
   <meta content='follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large' name='robots'/>
   
   <meta expr:content='data:blog.title' property='og:site_name'/>
-  <meta expr:content='data:blog.pageTitle' property='og:title'/>
-  <b:if cond='data:blog.metaDescription'>
-    <meta expr:content='data:blog.metaDescription' property='og:description'/>
+  <meta expr:content='data:blog.pageTitle' property='og:title'/> <!-- This will now use the new complex title logic -->
+  <!-- OG Description - Use similar logic to meta description for consistency -->
+  <b:if cond='data:blog.pageType == "item"'>
+    <b:if cond='data:post.metaDescription and data:post.metaDescription != ""'>
+      <meta expr:content='data:post.metaDescription' property='og:description'/>
+    <b:else/>
+      <meta expr:content='data:post.body.snippet({length: 155, ellipsis: true})' property='og:description'/>
+    </b:if>
+  <b:elseif cond='data:blog.pageType == "static_page"'/>
+    <b:if cond='data:page.metaDescription and data:page.metaDescription != ""'>
+      <meta expr:content='data:page.metaDescription' property='og:description'/>
+    <b:else/>
+      <meta expr:content='data:page.body.snippet({length: 155, ellipsis: true})' property='og:description'/>
+    </b:if>
+  <b:elseif cond='data:blog.pageType == "archive"'>
+    <meta expr:content='"Showing posts " + (data:blog.searchLabel ? "in category &quot;" + data:blog.searchLabel + "&quot;" : "for " + data:blog.pageName) + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' property='og:description'/>
+  <b:elseif cond='data:blog.pageType == "index"'>
+    <b:if cond='data:blog.searchQuery'>
+      <meta expr:content='"Search results for &quot;" + data:blog.searchQuery + "&quot;" + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' property='og:description'/>
+    <b:elseif cond='data:blog.searchLabel'/>
+      <meta expr:content='"Showing posts in category &quot;" + data:blog.searchLabel + "&quot;" + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' property='og:description'/>
+    <b:elseif cond='data:blog.metaDescription and data:blog.metaDescription != ""'/>
+      <meta expr:content='data:blog.metaDescription' property='og:description'/>
+    <b:else/>
+      <meta expr:content='"Welcome to " + data:blog.title + ". Read our latest articles and updates."' property='og:description'/>
+    </b:if>
+  <b:else/>
+    <b:if cond='data:blog.metaDescription and data:blog.metaDescription != ""'>
+      <meta expr:content='data:blog.metaDescription' property='og:description'/>
+    </b:if>
   </b:if>
   <meta expr:content='data:blog.url' property='og:url'/>
-  <meta content='website' property='og:type'/>
+  <b:if cond='data:blog.pageType == "item"'>
+    <meta content='article' property='og:type'/>
+  <b:else/>
+    <meta content='website' property='og:type'/>
+  </b:if>
   <meta content='en_US' property='og:locale'/>
+
+  <!-- Social Sharing Images -->
+  <b:if cond='data:blog.pageType == "item"'>
+    <b:if cond='data:post.featuredImage'>
+      <meta expr:content='data:post.featuredImage.replace("/s72-c/", "/s1600/")' property='og:image'/>
+      <meta expr:content='data:post.featuredImage.width.string' property='og:image:width'/>
+      <meta expr:content='data:post.featuredImage.height.string' property='og:image:height'/>
+    <b:else/>
+      <!-- TODO: User should replace YOUR_DEFAULT_SOCIAL_IMAGE_URL_PLACEHOLDER.png with a real, valid image URL (e.g., a generic site logo or banner) -->
+      <meta content='YOUR_DEFAULT_SOCIAL_IMAGE_URL_PLACEHOLDER.png' property='og:image'/>
+      <meta content='1200' property='og:image:width'/>
+      <meta content='630' property='og:image:height'/>
+    </b:if>
+  <b:elseif cond='data:blog.metaImage'/> <!-- A custom variable for a theme-wide social image -->
+      <meta expr:content='data:blog.metaImage' property='og:image'/>
+      <meta expr:content='data:blog.metaImage.width.string' property='og:image:width'/>
+      <meta expr:content='data:blog.metaImage.height.string' property='og:image:height'/>
+  <b:else/>
+    <!-- Fallback for homepage/other pages if no specific image, use the same default placeholder -->
+    <!-- TODO: User should replace YOUR_DEFAULT_SOCIAL_IMAGE_URL_PLACEHOLDER.png with a real, valid image URL -->
+    <meta content='YOUR_DEFAULT_SOCIAL_IMAGE_URL_PLACEHOLDER.png' property='og:image'/>
+    <meta content='1200' property='og:image:width'/>
+    <meta content='630' property='og:image:height'/>
+  </b:if>
   
   <meta content='summary_large_image' name='twitter:card'/>
   <meta expr:content='data:blog.title' name='twitter:site'/>
-  <meta expr:content='data:blog.pageTitle' name='twitter:title'/>
-  <b:if cond='data:blog.metaDescription'>
-    <meta expr:content='data:blog.metaDescription' name='twitter:description'/>
+  <meta expr:content='data:blog.pageTitle' name='twitter:title'/> <!-- This will now use the new complex title logic -->
+  <!-- Twitter Description - Use similar logic to meta description for consistency -->
+  <b:if cond='data:blog.pageType == "item"'>
+    <b:if cond='data:post.metaDescription and data:post.metaDescription != ""'>
+      <meta expr:content='data:post.metaDescription' name='twitter:description'/>
+    <b:else/>
+      <meta expr:content='data:post.body.snippet({length: 155, ellipsis: true})' name='twitter:description'/>
+    </b:if>
+  <b:elseif cond='data:blog.pageType == "static_page"'/>
+    <b:if cond='data:page.metaDescription and data:page.metaDescription != ""'>
+      <meta expr:content='data:page.metaDescription' name='twitter:description'/>
+    <b:else/>
+      <meta expr:content='data:page.body.snippet({length: 155, ellipsis: true})' name='twitter:description'/>
+    </b:if>
+  <b:elseif cond='data:blog.pageType == "archive"'>
+    <meta expr:content='"Showing posts " + (data:blog.searchLabel ? "in category &quot;" + data:blog.searchLabel + "&quot;" : "for " + data:blog.pageName) + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' name='twitter:description'/>
+  <b:elseif cond='data:blog.pageType == "index"'>
+    <b:if cond='data:blog.searchQuery'>
+      <meta expr:content='"Search results for &quot;" + data:blog.searchQuery + "&quot;" + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' name='twitter:description'/>
+    <b:elseif cond='data:blog.searchLabel'/>
+      <meta expr:content='"Showing posts in category &quot;" + data:blog.searchLabel + "&quot;" + (data:blog.pageNumber and data:blog.pageNumber gt 1 ? ". Page " + data:blog.pageNumber : "") + ". From " + data:blog.title + "." ' name='twitter:description'/>
+    <b:elseif cond='data:blog.metaDescription and data:blog.metaDescription != ""'/>
+      <meta expr:content='data:blog.metaDescription' name='twitter:description'/>
+    <b:else/>
+      <meta expr:content='"Welcome to " + data:blog.title + ". Read our latest articles and updates."' name='twitter:description'/>
+    </b:if>
+  <b:else/>
+    <b:if cond='data:blog.metaDescription and data:blog.metaDescription != ""'>
+      <meta expr:content='data:blog.metaDescription' name='twitter:description'/>
+    </b:if>
+  </b:if>
+  <!-- Ensure Twitter image is also set, similar to og:image -->
+  <b:if cond='data:blog.pageType == "item"'>
+    <b:if cond='data:post.featuredImage'>
+      <meta expr:content='data:post.featuredImage.replace("/s72-c/", "/s1600/")' name='twitter:image'/>
+    <b:else/>
+      <meta content='YOUR_DEFAULT_SOCIAL_IMAGE_URL_PLACEHOLDER.png' name='twitter:image'/>
+    </b:if>
+  <b:elseif cond='data:blog.metaImage'/>
+     <meta expr:content='data:blog.metaImage' name='twitter:image'/>
+  <b:else/>
+    <meta content='YOUR_DEFAULT_SOCIAL_IMAGE_URL_PLACEHOLDER.png' name='twitter:image'/>
+  </b:if>
+
+  <b:if cond='data:blog.pageType == "item"'>
+    <meta expr:content='data:post.timestampISO8601' property='article:published_time'/>
+    <meta expr:content='data:post.lastUpdatedISO8601 ? data:post.lastUpdatedISO8601 : data:post.timestampISO8601' property='article:modified_time'/>
+    <meta expr:content='data:post.author' property='article:author_name'/>
+    <b:if cond='data:post.labels and data:post.labels.size > 0'>
+      <b:loop values='data:post.labels' var='label' index='i'>
+        <meta expr:content='data:label.name' property='article:tag'/>
+      </b:loop>
+      <b:if cond='data:post.labels.first'>
+         <meta expr:content='data:post.labels.first.name' property='article:section'/>
+      </b:if>
+    </b:if>
   </b:if>
   
   <link expr:href='data:blog.url' rel='canonical'/>
@@ -37,7 +200,9 @@
   <link rel='dns-prefetch' href='//www.googletagservices.com'/>
   <link rel='dns-prefetch' href='//pagead2.googlesyndication.com'/>
   
+  <!-- TODO: Replace with your favicon URL -->
   <link href='YOUR_FAVICON.ico' rel='icon' type='image/x-icon'/>
+  <!-- TODO: Replace with your apple touch icon URL -->
   <link href='YOUR_APPLE_TOUCH_ICON.png' rel='apple-touch-icon'/>
   <b:if cond='data:blog.isMobile'>
     <meta content='yes' name='mobile-web-app-capable'/>
@@ -68,6 +233,16 @@
   ]]>
   </script>
 
+  <!-- Explicit Next/Prev Links for Paginated Series -->
+  <b:if cond='data:blog.pageType != "item" and data:blog.pageType != "static_page"'>
+    <b:if cond='data:newerPageUrl'>
+      <link expr:href='data:newerPageUrl' rel='prev'/>
+    </b:if>
+    <b:if cond='data:olderPageUrl'>
+      <link expr:href='data:olderPageUrl' rel='next'/>
+    </b:if>
+  </b:if>
+
   <b:skin><![CDATA[
   /* CSS Reset & Base Styles */
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -97,6 +272,13 @@
   h4 { font-size: 1.5rem; }
   h5 { font-size: 1.25rem; }
   h6 { font-size: 1.1rem; }
+
+  .page-title { /* For Archive & Search Results Titles */
+    font-size: 2rem; /* Consistent with H2, but is an H1 */
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #eee;
+  }
   
   p { margin-bottom: 1em; }
   
@@ -152,14 +334,42 @@
     text-decoration: none;
   }
   
-  /* Navigation */
-  .nav ul {
+  /* Mobile Navigation Toggle (Hamburger) */
+  .mobile-nav-toggle {
+    display: none; /* Hidden by default, shown in mobile media query */
+    cursor: pointer;
+    padding: 10px;
+    align-self: center; /* If parent is flex */
+    z-index: 101; /* Above .header sticky z-index */
+  }
+  .mobile-nav-toggle-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #333; /* Or use a theme variable */
+    margin: 4px 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Active state for hamburger (transform to "X") */
+  .mobile-nav-toggle.active .mobile-nav-toggle-bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .mobile-nav-toggle.active .mobile-nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .mobile-nav-toggle.active .mobile-nav-toggle-bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* Desktop Navigation */
+  .nav ul { /* This is #mobileMenuPanel ul */
     display: flex;
     list-style: none;
     gap: 2rem;
   }
   
-  .nav a {
+  .nav a { /* This is #mobileMenuPanel a */
     color: #666;
     font-weight: 500;
     padding: 0.5rem 0;
@@ -167,17 +377,53 @@
     transition: all 0.3s ease;
   }
   
-  .nav a:hover {
+  .nav a:hover { /* This is #mobileMenuPanel a:hover */
     color: #0066cc;
     border-bottom-color: #0066cc;
   }
   
+  /* Body class when mobile menu is open */
+  body.mobile-menu-active {
+    overflow: hidden; /* Prevent body scroll when mobile menu is open */
+  }
+
   /* AdSense Header Banner (This part scrolls, it's above the sticky header) */
   .header-ad {
     background: #f8f9fa;
     text-align: center;
-    padding: 1rem;
+    padding: 1rem; /* Padding for the outer container */
     border-bottom: 1px solid #e1e1e1;
+  }
+
+  /* Common Ad Placeholder Content Styling */
+  .ad-placeholder-content {
+    background: #f0f0f0;
+    padding: 20px; /* Padding for the inner content box */
+    text-align: center;
+    border: 1px dashed #ccc;
+    display: flex; /* For centering text */
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box; /* Ensure padding and border are within width/height */
+  }
+
+  .header-ad-content {
+    min-height: 90px;
+  }
+
+  .between-posts-ad-content {
+    min-height: 90px;
+  }
+
+  .sidebar-ad-content {
+    min-height: 250px;
+    width: 100%; /* Takes width of its container (.sidebar-ad) */
+    /* max-width: 300px; /* max-width is already on .sidebar-ad's inner div, but can be here too if needed */
+  }
+
+  .footer-ad-content {
+    min-height: 90px;
   }
   
   /* Main Layout */
@@ -224,14 +470,46 @@
   
   .post-content {
     padding: 1.5rem;
+    overflow-wrap: break-word; /* Ensure long words in content don't overflow */
+  }
+
+  /* Responsive Tables in Post Content */
+  .post-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto; /* Enable horizontal scroll for the table */
+    white-space: nowrap; /* Prevent content within table from wrapping aggressively if not desired */
+    border-collapse: collapse; /* Better table borders */
+    margin-bottom: 1em; /* Space around tables */
+  }
+  .post-content table th,
+  .post-content table td {
+    white-space: normal; /* Allow text within cells to wrap */
+    padding: 0.5em; /* Padding for cells */
+    border: 1px solid #e1e1e1; /* Basic cell borders */
+  }
+
+  /* Responsive Preformatted Text in Post Content */
+  .post-content pre {
+    max-width: 100%;
+    overflow-x: auto; /* Enable horizontal scroll */
+    padding: 1em;
+    background: #f8f9fa;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    margin-bottom: 1em; /* Space around pre blocks */
+    white-space: pre; /* Preserve whitespace but allow scroll */
   }
   
   .post-thumbnail {
     width: 100%;
-    height: auto; /* Maintain aspect ratio */
-    max-height: 400px; /* Optional: constrain max height */
+    /* height: auto; /* Height is determined by aspect-ratio if supported, or by content */
+    /* max-height: 400px; /* Removed to allow aspect-ratio to fully control dimensions */
     object-fit: cover;
     margin-bottom: 1rem;
+    border-radius: 8px; /* Ensure this is still here, was in original img styles */
+    background-color: #f0f0f0; /* Placeholder background for CLS */
+    aspect-ratio: 16/9; /* Standard aspect ratio for reserving space */
   }
   
   .post-snippet {
@@ -383,16 +661,40 @@
     background: #f8f9fa;
     padding: 1rem 0;
     font-size: 0.9rem;
-    border-bottom: 1px solid #e1e1e1; /* Added for separation */
+    border-bottom: 1px solid #e1e1e1;
   }
   
-  .breadcrumbs a {
-    color: #666;
+  .breadcrumbs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
   }
-  
-  .breadcrumbs span {
-    margin: 0 0.5rem;
+  .breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+  }
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: '/';
+    margin: 0 0.5em;
     color: #999;
+  }
+  .breadcrumb-item a {
+    color: #666; /* Match existing link color */
+    text-decoration: none;
+  }
+  .breadcrumb-item a:hover {
+    text-decoration: underline;
+  }
+  .breadcrumb-item .current-item span[itemprop="name"], /* For current item, which is a span */
+  .breadcrumb-item span[itemprop="name"] { /* For linked items, name is also a span */
+    color: #333; /* Darker color for current item, or general breadcrumb text */
+  }
+  .breadcrumb-item.current-item span[itemprop="name"] {
+    font-weight: 600; /* Make current item bold */
+    color: #000;
   }
   
   /* Pagination */
@@ -434,14 +736,68 @@
     }
     
     .header-content {
-      flex-direction: column; /* Stack logo and nav */
-      gap: 1rem;
+      /* flex-direction: column; /* Stack logo and nav */ /* Keep as row, hamburger is on the right */
+      /* gap: 1rem; */ /* Default gap is fine or adjust as needed */
+      position: relative; /* For potential absolute positioning of elements if needed */
     }
     
-    .nav ul {
-      gap: 1rem;
-      justify-content: center; 
-      flex-wrap: wrap; /* Allow nav items to wrap if too many */
+    .header-content .logo {
+      /* Potentially adjust logo size or position if needed for mobile next to hamburger */
+      /* E.g., ensure it doesn't take full width if hamburger is to its right */
+    }
+
+    .mobile-nav-toggle {
+      display: block; /* Show hamburger */
+      /* Example: position to the right if .header-content is space-between and nav is hidden */
+      /* If .nav is immediately after .logo, hamburger might be after .nav then.
+         Let's assume .nav will be hidden, so hamburger can be last item in flex order or explicitly positioned.
+         If .header-content uses justify-content: space-between, this should appear on the right if .nav is hidden.
+      */
+    }
+
+    .nav { /* This is now #mobileMenuPanel */
+      display: none; /* Initially hidden by CSS for mobile */
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: #fff;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+      padding: 20px;
+      z-index: 1000;
+      transition: left 0.3s ease-in-out;
+      overflow-y: auto;
+    }
+
+    .nav.mobile-menu-open { /* Class added by JS to show the menu */
+      display: block; /* Or flex/grid if needed for children's layout */
+      left: 0; /* Slide in */
+    }
+
+    .nav ul { /* This is #mobileMenuPanel ul */
+      flex-direction: column;
+      gap: 1rem; /* Adjust gap for vertical items */
+      align-items: flex-start; /* Align items to the start */
+      /* flex-wrap: wrap; /* Not needed for column layout */
+      /* justify-content: center; /* Not needed for column */
+    }
+
+    .nav li { /* This is #mobileMenuPanel li */
+      width: 100%; /* Make list items take full width */
+    }
+
+    .nav a { /* This is #mobileMenuPanel a */
+      display: block; /* Make links block for full-width tap targets */
+      padding: 10px 0; /* Adjust padding for better tap targets */
+      border-bottom: 1px solid #eee; /* Optional separator */
+    }
+    .nav a:hover { /* This is #mobileMenuPanel a:hover */
+      border-bottom-color: transparent; /* Reset hover from desktop */
+    }
+    .nav li:last-child a { /* This is #mobileMenuPanel li:last-child a */
+      border-bottom: none;
     }
     
     .main-wrapper {
@@ -589,7 +945,7 @@
   <a class='sr-only' href='#main-content'>Skip to main content</a>
 
   <div class='header-ad'>
-    <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;min-height:90px;'>
+    <div class='ad-placeholder-content header-ad-content'>
       <p>Header AdSense Banner (e.g., 728x90 / Responsive)</p>
       <p>Replace this placeholder with your AdSense code</p>
     </div>
@@ -598,12 +954,21 @@
   <header class='header' role='banner'>
     <div class='container'>
       <div class='header-content'>
-        <div class='logo'>
-          <a expr:href='data:blog.homepageUrl'>
-            <data:blog.title/>
-          </a>
+        <b:if cond='data:blog.pageType == &quot;index&quot;'>
+          <h1 class='logo'>
+            <a expr:href='data:blog.homepageUrl'><data:blog.title/></a>
+          </h1>
+        <b:else/>
+          <div class='logo'>
+            <a expr:href='data:blog.homepageUrl'><data:blog.title/></a>
+          </div>
+        </b:if>
+        <div class='mobile-nav-toggle' id='mobileNavToggle' role='button' aria-expanded='false' aria-controls='mobileMenuPanel' tabindex='0'>
+          <span class='mobile-nav-toggle-bar'></span>
+          <span class='mobile-nav-toggle-bar'></span>
+          <span class='mobile-nav-toggle-bar'></span>
         </div>
-        <nav class='nav' role='navigation' aria-label='Main navigation'>
+        <nav class='nav' id='mobileMenuPanel' role='navigation' aria-label='Main navigation'>
           <ul>
             <li><a href='/'>Home</a></li>
             <li><a href='/search/label/Technology'>Technology</a></li>
@@ -616,26 +981,50 @@
     </div>
   </header>
 
-  <b:if cond='data:blog.pageType == &quot;item&quot; or data:blog.pageType == &quot;archive&quot; or data:blog.searchLabel'>
+  <b:if cond='data:blog.pageType == "item" or data:blog.pageType == "archive" or data:blog.searchLabel'>
     <div class='breadcrumbs'>
       <div class='container'>
-        <a expr:href='data:blog.homepageUrl'>Home</a>
-        <b:if cond='data:blog.pageType == &quot;item&quot;'>
-          <b:if cond='data:post.labels'>
-            <b:loop values='data:post.labels' var='label' index='i'>
-              <span>/</span>
-              <a expr:href='data:label.url'><data:label.name/></a>
-            </b:loop>
-          </b:if>
-          <span>/</span>
-          <span><data:blog.pageName/></span>
-        <b:elseif cond='data:blog.searchLabel'/>
-          <span>/</span>
-          <span>Category: <data:blog.searchLabel/></span>
-        <b:elseif cond='data:blog.pageType == &quot;archive&quot;'/>
-          <span>/</span>
-          <span>Archive: <data:blog.pageName/></span>
-        </b:if>
+        <nav aria-label='Breadcrumb'>
+          <ol itemscope='' itemtype='https://schema.org/BreadcrumbList' class='breadcrumbs-list'>
+            <li itemprop='itemListElement' itemscope='' itemtype='https://schema.org/ListItem' class='breadcrumb-item'>
+              <a itemprop='item' expr:href='data:blog.homepageUrl'>
+                <span itemprop='name'>Home</span>
+              </a>
+              <meta itemprop='position' content='1'/>
+            </li>
+
+            <b:if cond='data:blog.pageType == "item"'>
+              <b:if cond='data:post.labels and data:post.labels.first'>
+                <li itemprop='itemListElement' itemscope='' itemtype='https://schema.org/ListItem' class='breadcrumb-item'>
+                  <a itemprop='item' expr:href='data:post.labels.first.url'>
+                    <span itemprop='name'><data:post.labels.first.name/></span>
+                  </a>
+                  <meta itemprop='position' content='2'/>
+                </li>
+                <li itemprop='itemListElement' itemscope='' itemtype='https://schema.org/ListItem' class='breadcrumb-item current-item'>
+                  <span itemprop='name'><data:blog.pageName/></span> <!-- Post Title, current page -->
+                  <meta itemprop='position' content='3'/>
+                </li>
+              <b:else/>
+                <!-- Post has no labels, breadcrumb is Home > Post Title -->
+                <li itemprop='itemListElement' itemscope='' itemtype='https://schema.org/ListItem' class='breadcrumb-item current-item'>
+                  <span itemprop='name'><data:blog.pageName/></span> <!-- Post Title, current page -->
+                  <meta itemprop='position' content='2'/>
+                </li>
+              </b:if>
+            <b:elseif cond='data:blog.searchLabel'/> <!-- Label/Category Archive Page -->
+              <li itemprop='itemListElement' itemscope='' itemtype='https://schema.org/ListItem' class='breadcrumb-item current-item'>
+                <span itemprop='name'>Category: <data:blog.searchLabel/></span> <!-- Current page -->
+                <meta itemprop='position' content='2'/>
+              </li>
+            <b:elseif cond='data:blog.pageType == "archive"'/> <!-- Date Archive Page -->
+              <li itemprop='itemListElement' itemscope='' itemtype='https://schema.org/ListItem' class='breadcrumb-item current-item'>
+                <span itemprop='name'>Archive: <data:blog.pageName/></span> <!-- Current page -->
+                <meta itemprop='position' content='2'/>
+              </li>
+            </b:if>
+          </ol>
+        </nav>
       </div>
     </div>
   </b:if>
@@ -644,6 +1033,20 @@
     <div class='main-wrapper'>
       <main class='main-content' id='main-content' role='main'>
         
+        <b:if cond='data:blog.pageType == &quot;archive&quot;'>
+          <h1 class='page-title archive-title'>
+            <b:if cond='data:blog.searchLabel'>
+              Category: <data:blog.searchLabel/>
+            <b:else/>
+              Archive: <data:blog.pageName/>
+            </b:if>
+          </h1>
+        <b:elseif cond='data:blog.searchQuery'/>
+          <h1 class='page-title search-results-title'>
+            Search Results for: <data:blog.searchQuery/>
+          </h1>
+        </b:if>
+
         <b:section class='main' id='main' maxwidgets='1' name='Blog Posts' showaddelement='no'>
           <b:widget id='Blog1' locked='true' title='Blog Posts' type='Blog' version='2' visible='true'>
             <b:widget-settings>
@@ -685,7 +1088,7 @@
                     <div class='post-content' itemprop='articleBody'>
                       <b:if cond='data:post.featuredImage'>
                         <a expr:href='data:post.url' expr:title='data:post.title'>
-                           <img class='post-thumbnail' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image'/>
+                           <img loading='lazy' class='post-thumbnail' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image'/>
                         </a>
                       <b:else/>
                          </b:if>
@@ -697,7 +1100,7 @@
                   </article>
                   
                   <b:if cond='data:post.includeAd'> <div class='between-posts-ad'>
-                      <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;min-height:90px;'>
+                      <div class='ad-placeholder-content between-posts-ad-content'>
                         <p>Between Posts AdSense (Responsive)</p>
                         <p>Replace this placeholder with your AdSense code</p>
                       </div>
@@ -726,7 +1129,9 @@
                          "logo": {
                            "@type": "ImageObject",
                            // IMPORTANT: Replace with your actual logo URL for better schema
-                           "url": "YOUR_LOGO_URL_HERE.png" 
+                           "url": "YOUR_LOGO_URL_HERE.png",
+                           "width": 600, // Optional: Replace with your logo's width
+                           "height": 60  // Optional: Replace with your logo's height
                          }
                       },
                       "datePublished": "]]><data:post.timestampISO8601.jsonEscaped/><![CDATA[",
@@ -735,6 +1140,9 @@
                         "@type": "WebPage",
                         "@id": "]]><data:post.url.canonical.jsonEscaped/><![CDATA["
                       },
+<b:if cond='data:post.labels and data:post.labels.size > 0'>
+                      "keywords": "<b:loop values='data:post.labels' var='label' index='i'><data:label.name.jsonEscaped/><b:if cond='data:i != data:post.labels.size - 1'>, </b:if></b:loop>",
+</b:if>
                       "description": "]]><b:eval expr='(data:post.metaDescription ? data:post.metaDescription : data:post.snippets.long ? data:post.snippets.long : data:post.body snippet { length: 155, links: false, linebreaks: false, ellipsis: true }) .jsonEscaped'/><![CDATA["
                     }
                     ]]>
@@ -763,7 +1171,7 @@
                     </header>
                     
                     <div class='post-content' itemprop='articleBody'>
-                      <b:if cond='data:post.featuredImage and data:blog.pageType == &quot;item&quot;'> <img class='post-thumbnail' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image' style='margin-bottom:1.5em;'/>
+                      <b:if cond='data:post.featuredImage and data:blog.pageType == &quot;item&quot;'> <img loading='lazy' class='post-thumbnail post-featured-image-single-item' expr:alt='data:post.title' expr:src='data:post.featuredImage.replace(&quot;/s72-c/&quot;, &quot;/s1600/&quot;)' itemprop='image'/>
                       </b:if>
                       <data:post.body/>
                     </div>
@@ -804,7 +1212,7 @@
       <aside class='sidebar' role='complementary'>
         
         <div class='sidebar-ad'>
-          <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;width:100%;max-width:300px;min-height:250px;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto;'>
+          <div class='ad-placeholder-content sidebar-ad-content' style='max-width:300px; margin:0 auto;'>
             <p>Sidebar AdSense</p>
             <p>(e.g., 300x250)</p>
             <p>Replace with your code</p>
@@ -862,7 +1270,7 @@
 
   <div class='footer-ad'>
     <div class='container'>
-      <div style='background:#f0f0f0;padding:20px;text-align:center;border:1px dashed #ccc;min-height:90px;'>
+      <div class='ad-placeholder-content footer-ad-content'>
         <p>Footer AdSense Banner (Responsive)</p>
         <p>Replace this placeholder with your AdSense code</p>
       </div>
@@ -874,6 +1282,7 @@
       <div class='footer-content'>
         <div class='footer-section about-us'>
           <h3>About Us</h3>
+          <!-- TODO: Customize About Us section content below -->
           <p>Your blog description or a short bio here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
         <div class='footer-section quick-links'>
@@ -887,6 +1296,7 @@
         </div>
         <div class='footer-section follow-us'>
           <h3>Follow Us</h3>
+          <!-- TODO: Update Follow Us links and add more if needed -->
           <ul>
             <li><a href='#' target='_blank' rel='noopener noreferrer'>Facebook</a></li>
             <li><a href='#' target='_blank' rel='noopener noreferrer'>Twitter</a></li>
@@ -901,19 +1311,19 @@
     </div>
   </footer>
 
-  <!--
-  <a href='#' id='back-to-top' title='Back to Top' style='display:none;position:fixed;bottom:20px;right:20px;background:#0066cc;color:white;padding:10px 15px;border-radius:5px;z-index:1000;'>&uarr;</a>
-  <script>
-  // Simple Back to Top Button Script
-  // window.onscroll = function() {
-  //   var backToTopButton = document.getElementById('back-to-top');
-  //   if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-  //     backToTopButton.style.display = 'block';
-  //   } else {
-  //     backToTopButton.style.display = 'none';
-  //   }
-  // };
+  <a href='#' id='back-to-top' title='Back to Top'>&uarr;</a>
+  <script type='text/javascript'>
+  //<![CDATA[
+  // Simple Back to Top Button Script (Minified)
+  window.onscroll=function(){var e=document.getElementById("back-to-top");document.body.scrollTop>200||document.documentElement.scrollTop>200?e.style.display="block":e.style.display="none"};
+  //]]>
   </script>
-  -->
+
+  <script type='text/javascript'>
+  //<![CDATA[
+  // Mobile Navigation Toggle Script (Minified)
+  const mobileNavToggle=document.getElementById("mobileNavToggle"),mobileMenuPanel=document.getElementById("mobileMenuPanel");mobileNavToggle&&mobileMenuPanel&&mobileNavToggle.addEventListener("click",function(){mobileNavToggle.classList.toggle("active"),mobileMenuPanel.classList.toggle("mobile-menu-open");const e=mobileNavToggle.getAttribute("aria-expanded")==="true"||!1;mobileNavToggle.setAttribute("aria-expanded",!e),document.body.classList.toggle("mobile-menu-active")});
+  //]]>
+  </script>
 </body>
 </html>
